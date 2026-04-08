@@ -7,6 +7,9 @@ on:
 
 jobs:
   call-devsecops:
+    permissions:
+      contents: read
+      id-token: write
     uses: mdkteramura/central-ops/.github/workflows/devsecops-standard.yml@main
     with:
       project_id: "rebre-vm"
