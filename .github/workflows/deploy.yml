@@ -1,0 +1,16 @@
+name: App Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  call-devsecops:
+    uses: mdkteramura/central-ops/.github/workflows/devsecops-standard.yml@main
+    with:
+      project_id: "rebre-vm"
+      region: "asia-northeast1"
+      function_name: "devsecops-demo-func"
+      workload_identity_provider: "projects/48035393373/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
+      service_account: "github-actions-deployer@rebre-vm.iam.gserviceaccount.com"
