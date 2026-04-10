@@ -3,9 +3,9 @@ import os
 from flask import Flask, request
 import functions_framework
 
-# ❌ Secret Scanning 用: 以前のシークレット露出はそのまま維持
-FAKE_GCP_KEY = "AIzaSyA" + "B" * 32
-FAKE_AWS_KEY = "AKIA" + "1234567890" + "ABCDEF"
+# ❌ Secret Scanning 用: Push protection を確実に発動させるためのリテラル文字列
+FAKE_GCP_KEY = "AIzaSyABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"
+
 
 app = Flask(__name__)
 
@@ -16,14 +16,14 @@ def vulnerable():
     file_name = request.args.get("file")
 
     # --- 脆弱性 1: SQL Injection ---
-    # 文字列結合でクエリを作成しているため、CodeQLが確実に検出します
+    # 文字列結合でクエリを作成しているため、CodeQLが確実に検出
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
     query = "SELECT * FROM users WHERE id = " + user_id 
     cursor.execute(query)
 
     # --- 脆弱性 2: OS Command Injection ---
-    # ユーザー入力をシェルコマンドに直接渡しているため、確実に検出します
+    # ユーザー入力をシェルコマンドに直接渡しているため、確実に検出
     os.system("ls -l " + file_name)
 
     return "Process completed"
